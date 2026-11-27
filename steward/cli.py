@@ -56,9 +56,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"No git history found in {repo}.")
             return 0
         width = max(len(path) for path in results)
-        for path, experts in results.items():
-            names = ", ".join(f"{author} ({score:.1f})" for author, score in experts)
-            print(f"{path:<{width}}  {names}")
+        rows = [
+            (path, ", ".join(f"{author} ({score:.1f})" for author, score in experts))
+            for path, experts in results.items()
+        ]
+        names_width = max(len(names) for _, names in rows)
+        for path, names in rows:
+            print(f"{path:<{width}}  {names:>{names_width}}")
         return 0
     return 2
 
